@@ -76,13 +76,11 @@ OKseqHMM <- function(bamfile,chrsizes,fileOut, thresh, winS, binSize,mappedReads
       print("Seperating the forward strand bam.")
       # Forward strand.
       system(paste0("samtools view -bh -f 16 -@ 4 ",bamfile," > ",fileOut,"_fwd.bam"))
-      #system(paste0("samtools view -c -bh -F 20 ",bamfile," > ",fileOut,"_fwd.bam"))
       system(paste0("samtools index ",fileOut,"_fwd.bam"))
 
       print("Seperating the reverse strand bam.")
       # Reverse strand
       system(paste0("samtools view -bh -F 16 -@ 4 ",bamfile," > ",fileOut,"_rev.bam"))
-      #system(paste0("samtools view -c -bh -f 16 ",bamfile," > ",fileOut,"_rev.bam"))
       system(paste0("samtools index ",fileOut,"_rev.bam"))
 
     }
@@ -99,7 +97,7 @@ OKseqHMM <- function(bamfile,chrsizes,fileOut, thresh, winS, binSize,mappedReads
         {
           if (mappedReads == TRUE & pairedReads == FALSE & properPair == FALSE)
           {
-            print(paste0("You choose to use the mapped-reads option for the bam files"))
+            print(paste0("You choose to use the mapped-reads option for the bam files (by default)"))
             system(paste0("samtools view -q 1 -F 4 ",fileOut,"_fwd.bam ",chr.name," > fwd_",chr.name,".sam"))
             system(paste0("awk '$3~/^", chr.name, "$/ {print $2 \"\t\" $4}' fwd_",chr.name,".sam > fwd_",chr.name,".txt"))
             fileInF <- paste0("fwd_",chr.name,".txt")
@@ -172,7 +170,7 @@ OKseqHMM <- function(bamfile,chrsizes,fileOut, thresh, winS, binSize,mappedReads
           }
           else if (mappedReads == FALSE & pairedReads == FALSE & properPair == FALSE)
           {
-            print(paste0("Bam files will be proceeded by default."))
+            print(paste0("Bam files will be proceeded without extra mapping options."))
             system(paste0("samtools view -q 1 ",fileOut,"_fwd.bam ",chr.name," > fwd_",chr.name,".sam"))
             system(paste0("awk '$3~/^", chr.name, "$/ {print $2 \"\t\" $4}' fwd_",chr.name,".sam > fwd_",chr.name,".txt"))
             fileInF <- paste0("fwd_",chr.name,".txt")
